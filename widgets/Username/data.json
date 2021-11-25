@@ -1,0 +1,14 @@
+{
+    "config":{
+        "align": [
+            "center",
+            "left",
+            "right"
+        ],
+        "styling": [
+            "None",
+            "Hi",
+            "Hello"
+        ]
+    }
+}

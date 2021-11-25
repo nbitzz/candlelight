@@ -1,0 +1,16 @@
+{
+    "config":{
+        "align": [
+            "center",
+            "left",
+            "right"
+        ],
+        "display": [
+            "used/full+percentage%",
+            "percentage",
+            "used/full",
+            "space_left"
+        ],
+        "disk":"C"
+    }
+}
