@@ -1,0 +1,769 @@
+<html>
+  
+  <head>
+    <title>Candlelight</title>
+    <style id="candleStyle">
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Source+Sans+Pro:wght@200&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Open+Sans:wght@300&display=swap');
+      * {
+        font-family:"Fira Code",monospace;
+      }
+      
+      tag {
+        font-size:10px;
+        position:relative;
+        top:-10px;
+        color:#66CCEE;
+        text-transform:uppercase;
+      }
+      
+      #connectionStatusTopbar {
+        left:0px;
+        top:0px;
+        position:fixed;
+        width:100%;
+        height:30px;
+        background-color:#DDDDDD;
+        z-index:100;
+      }
+      
+      #connectionStatusTopbar p {
+        top:50%;
+        left:10px;
+        transform:translate(0%,-125%);
+        position:absolute;
+      }
+      
+      #connectionStatusTopbar button {
+        top:50%;
+        left:calc( 100% - 10px );
+        transform:translate(-100%,-50%);
+        position:absolute;
+        border:2px solid #FFFFFF;
+        border-radius:8px;
+      }
+      
+      #search {
+        border:2px solid #555555;
+        border-radius:12px;
+        width:500px;
+        height:50px;
+        outline:none;
+        background:#222222;
+        color:white;
+        font-size:20px;
+        padding-left:15px;
+        padding-right:15px;
+      }
+      #wind {
+        left:10px;
+        position:fixed;
+        top:20px;
+        /*height:180px;*/
+        transition-duration:0.2s;
+      }
+      #statDiv {
+        position:absolute;
+        width:100%;
+        top:-20px;
+        height:15px;
+        background-color:#FFFFFF00;
+
+      }
+      
+      .result {
+        width:calc( 100% - 10px);
+        height:25px;
+        background-color:#333333;
+        border:none;
+        transition-duration:0.1s;
+        position:relative;
+        padding-left:10px;
+        padding-top:5px;
+        color:white;
+      }
+      
+      .result[ha]:hover {
+        background-color:#CCCC33;
+        transition-duration:0.1s;
+        color:black;
+      }
+      
+      #results {
+        width:100%;
+        /*height:60px;*/
+        border-radius:12px;
+        background-color:#333333;
+        position:relative;
+        top:10px;
+        overflow:hidden;
+        transition-duration:0.2s;
+        height:0px;
+      }
+      
+      body {
+        background-color:#666666;
+      }
+      
+      .widg {
+        width:125px;
+        height:15px;
+        font-size:15px;
+        text-align:center;
+        position:fixed;
+        top:0px;
+        color:white;
+      }
+      
+      /* Stuff from legacy */
+      
+      #err_scr {
+        background-color:#333333;
+        position:fixed;
+        width:400px;
+        height:250px;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+      z-index:10;
+      }
+      
+      .loginInput {
+        border:none;
+        outline:none;
+        border-radius:4px;
+        font-family:'Source Sans Pro',sans-serif;
+        font-size:16px;
+        transform:translate(-50%,0%);
+        left:50%;
+        position:relative;
+        text-align:center;
+        background-color:#444444;
+        color:#DDDDDD;
+        padding:2px;
+      }
+      
+    </style>
+  
+  </head>
+  
+  <body>
+    <div id="widget_1" class="widg" style="left:10px;"></div>
+    <div id="widget_2" class="widg" style="left:135px;"></div>
+    <div id="widget_3" class="widg" style="left:260px;"></div>
+    <div id="widget_4" class="widg" style="left:385px;"></div>
+    <div id="wind">
+      <input id="search" placeholder="What would you like to do?" autocomplete="off">
+      <div id="results">
+        
+      </div>
+    </div>
+  </body>
+  
+  <script>
+    
+    let loginToken
+    const searchBar = document.getElementById("search")
+    let resultsArea = document.getElementById("results")
+    let usernameLoggedIn = ""
+    
+    document.oncontextmenu = (e) => {e.preventDefault()}
+
+    window.autocomplete = []
+
+    /*
+    const Options = [
+      {
+        name:"Change my password",
+        words: ["password","change","change","pw","pass","security"],
+        action: function() {
+          createCustomMenu(
+          {
+            placeholder:"New password...",
+            type:"password"
+          },
+            [
+              {
+                name:"Confirm",
+                action: function() {
+                  let psw = searchBar.value
+                  if (psw) {
+                    sendRaw({type:"passchange",newpass:psw})
+                  }
+                  returnToNormalMenu()
+                }
+              },
+              {
+                name:"Cancel",
+                action: function() {
+                  returnToNormalMenu()
+                }
+              }
+            ]
+          )
+        }
+      },
+      {
+        name:"Log out of all sessions",
+        words: ["log","out","sessions","sessions","session","security","session"],
+        action: function() {
+          
+        }
+      },
+      {
+        name:"Log out",
+        words: ["log","log","out","account"],
+        action: function() {
+          if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.setItem("uchatLogin","")
+            window.location = "/uchat"
+          }
+          createCustomMenu(
+          {
+            value:"Are you sure you want to log out?",
+            disabled:true
+          },
+            [
+              {
+                name:"Yes",
+                action: function() {
+                  localStorage.setItem("uchatLogin","")
+                  window.location = "/uchat"
+                }
+              },
+              {
+                name:"Nevermind",
+                action: function() {
+                  returnToNormalMenu()
+                }
+              }
+            ]
+          )
+        }
+      },
+      {
+        name:"Contact a moderator",
+        words: ["report","user","bad","dangerous","content","ask","admin","mod","moderator"],
+        action: function() {
+          window.location=`/ucApps/mail#Exobyte`
+        }
+      },
+      {
+        name:"View my profile",
+        words: ["see","change","view","account","profile","bio","bio"],
+        action: function() {
+          window.location=`/ucApps/profile#${usernameLoggedIn}`
+        }
+      },
+      {
+        name:"Deactivate my account",
+        words: ["deactivate","account","delete","remove"],
+        action: () => {
+          createCustomMenu(
+          {
+            value:"Are you sure you want to deactivate?",
+            disabled:true
+          },
+            [
+              {
+                name:"Yes",
+                action: function() {
+                  createCustomMenu(
+          {
+            value:"Your account cannot be recovered.",
+            disabled:true
+          },
+            [
+              {
+                name:"Continue",
+                action: function() {
+                  createCustomMenu(
+          {
+            placeholder:"Retype your username to continue.",
+            disabled:false
+          },
+            [
+              {
+                name:"OK",
+                action: function() {
+                  if (searchBar.value == usernameLoggedIn) {
+                    localStorage.setItem("uchatLogin","")
+                    window.location = "/uchat"
+                  }
+                }
+              },
+              {
+                name:"Nevermind",
+                action: function() {
+                  returnToNormalMenu()
+                }
+              }
+            ]
+          )
+                }
+              },
+              {
+                name:"Nevermind",
+                action: function() {
+                  returnToNormalMenu()
+                }
+              }
+            ]
+          )
+                }
+              },
+              {
+                name:"Nevermind",
+                action: function() {
+                  returnToNormalMenu()
+                }
+              }
+            ]
+          )
+        }
+      },
+      {
+        name:"Profile visibility",
+        words: ["profile","account","show","hide"],
+        action: () => {
+          
+        }
+      }
+    ]
+
+  
+    const getSorted = function(Containing) {
+      let match = Containing.replace(/\,/g,"").replace(/\./g,"").replace(/\!/g,"").replace(/\?/g).toLowerCase().split(" ").filter(e => !e.endsWith("'s"))
+      console.log(match)
+      Options.sort((first,second) => {
+        let fPts = 0
+        let sPts = 0
+        first.words.forEach((v) => {
+          if (match.find(e => e == v)) {
+            fPts++
+          }
+        })
+        second.words.forEach((v) => {
+          if (match.find(e => e == v)) {
+            sPts++
+          }
+        })
+        first.hidden = ({0:true})[fPts] || false
+        second.hidden = ({0:true})[sPts] || false
+        first.pts = fPts
+        second.pts = sPts
+        return ({true:-1,false:1})[fPts>sPts]
+      })
+    }*/
+
+    var avWidgets = []
+
+    console.log(window.widgets)
+
+    avWidgets = JSON.parse(window.widgets)/*.forEach((v,x) => {
+      avWidgets.push({name:v})
+    })*/
+
+    const getOptionsForWidgetInSlot = function(x) {
+      let st = JSON.parse(window.setting)
+      return avWidgets.find(A => A.name == st.widgets[x.toString()].name).config
+    }
+
+    const getRealSettings = function(x) {
+      let st = JSON.parse(window.setting)
+      console.log(x)
+      let wData = avWidgets.find(A => A.name == st.widgets[x.toString()].name)
+      let stX = {}
+      console.log(wData)
+      for (let [key,value] of Object.entries(wData.data.config)) {
+        stX[key] = st.widgets[x.toString()].settings[key] || value[0] || value
+      }
+      return stX
+    }
+
+    const loadWidget = function(x) {
+      let st = JSON.parse(window.setting)
+      let wData = avWidgets.find(A => A.name == st.widgets[x.toString()].name)
+      let widgetsettings = getRealSettings(x)
+      eval(wData.script)(document.getElementById(`widget_${x}`),widgetsettings)
+    }
+
+    const gThemeNames = function() {
+      let xA = []
+      JSON.parse(window.themes).forEach((v,x) => {
+        xA.push({name:v})
+      })
+      return xA
+    }
+
+    const loadPackages = function() {
+      let st = JSON.parse(window.setting)
+      st.pkg.forEach((v,x) => {
+        eval(JSON.parse(window.packages).find(e => e.name == v).js)
+      })
+    }
+
+    const getConfigAutocompleteSlot = function(x) {
+      let st = JSON.parse(window.setting)
+      let wData = avWidgets.find(A => A.name == st.widgets[x.toString()].name)
+      let optionsAuto = []
+      for (let [key,value] of Object.entries(wData.data.config)) {
+        let bcx = []
+        if (typeof(value) != typeof("abcabc")) {
+        value.forEach((v,x) => {
+          bcx.push({name:v})
+        })
+      }
+        optionsAuto.push(
+          {
+            name:key,
+            autocomplete:bcx
+          }
+        )
+      }
+      return {
+        name:x.toString(),
+        autocomplete: optionsAuto
+      }
+    }
+
+    const MHOTKEYS = ["f3","f4","f7","home"]
+
+    loadWidget(1)
+    loadWidget(2)
+    loadWidget(3)
+    loadWidget(4)
+    
+    
+
+    window.commands = [
+      {
+        name:"search",
+        action:(arg) => {
+          exec(`webbrowser.open('https://www.google.com/search?q=${arg.replace(/ /g,"+")}')`)
+          candle()
+        }
+      },
+      {
+        name:"candlelight",
+        action:(arg) => {
+          let st = JSON.parse(window.setting)
+          let args = arg.split(" ")
+          switch(args[0]) {
+            case "restart":
+              reloadBrowser()
+            break
+            case "quit":
+              exit()
+            break
+            case "theme":
+              if (JSON.parse(window.themes).find(e => e == args[1])) {
+                st.theme = args[1]
+                saveSettings(JSON.stringify(st))
+                reloadBrowser()
+              }
+            case "hotkey":
+              if (MHOTKEYS.find(e => e == args[1])) {
+                st.hotkey = args[1]
+                saveSettings(JSON.stringify(st))
+                reloadBrowser()
+              }
+              
+            break
+            case "widget":
+            switch(args[1]) {
+              case "set":
+                if (st.widgets[args[2]] && avWidgets.find(e => e.name == args[3])) {
+                  st.widgets[args[2]] = {name:args[3],settings:{}}
+                  saveSettings(JSON.stringify(st))
+                  reloadBrowser()
+                } else {
+                  candle()
+                }
+              break
+              case "config":
+                console.log(st.widgets[args[2]].name)
+                let cfg = avWidgets.find(e => e.name == st.widgets[args[2]].name).data.config[args[3] || ""] || []
+                console.log(cfg)
+                let joinD = args.slice(4)
+                let jjjx = []
+                joinD.forEach((v,x) => {
+                  if (v) {
+                    jjjx.push(v)
+                  }
+                })
+                if (st.widgets[args[2]] && ((args[4] && typeof(cfg) == typeof("test")) || cfg.find(e => e == jjjx.join(" ")))) {
+                  st.widgets[args[2]].settings[args[3]] = jjjx.join(" ")
+                  saveSettings(JSON.stringify(st))
+                  reloadBrowser()
+                } else {
+                  candle()
+                }
+              break
+            }
+            break
+            case "put_ui":
+              st["ui_put"] = args[1]
+              saveSettings(JSON.stringify(st))
+              reloadBrowser()
+            break
+            case "default_command":
+              if (window.commands.find(e => e.name == args[1])) {
+              st["no_valid"] = args[1]
+              saveSettings(JSON.stringify(st))
+              reloadBrowser()
+              }
+            break
+          }
+        },
+        autocomplete: [
+                  {
+                    name:"hotkey",
+                    autocomplete:[
+                      {name:"home"},
+                      {name:"f4"},
+                      {name:"f7"},
+                      {name:"f3"}
+                    ]
+                  },
+                  {
+                    name:"theme",
+                    autocomplete:gThemeNames()
+                  },
+                  {
+                    name:"widget",
+                    autocomplete:[
+                      {
+                        name:"set",
+                        autocomplete: [
+                        {name:"1",autocomplete:avWidgets},
+                        {name:"2",autocomplete:avWidgets},
+                        {name:"3",autocomplete:avWidgets},
+                        {name:"4",autocomplete:avWidgets}
+                        ]
+                      },
+                      {
+                        name:"config",
+                        autocomplete: [
+                          getConfigAutocompleteSlot(1),
+                          getConfigAutocompleteSlot(2),
+                          getConfigAutocompleteSlot(3),
+                          getConfigAutocompleteSlot(4),
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    name:"put_ui",
+                    autocomplete:[
+                      {name:"center"},{name:"top"}
+                    ]
+                  },
+                  {
+                    name:"default_command",
+                    autocomplete:[
+                      
+                    ]
+                  },
+                  {
+                    name:"restart"
+                  },
+                  {
+                    name:"quit"
+                  }
+            ]
+      }
+    ]
+
+
+    const getAutocomplete = function() {
+      let x = searchBar.value.split(" ")
+      let cmd = x[0].toLowerCase()
+      x.splice(0,1)
+      let arg = x.join(" ")
+      window.autocomplete = []
+      if (x.length == 0) {
+        commands.forEach((v) => {
+          if (v.name.startsWith(cmd)) {
+            window.autocomplete.push({
+              decor: v.name+"...",
+              act:v.name.slice(cmd.length)+" "
+            })
+          }
+        })
+      } else {
+        let cmdX = commands.find(e => e.name == cmd)
+        if ((cmdX || {}).autocomplete) {
+          let focusedAutocomplete
+          let cms = commands
+          searchBar.value.split(" ").forEach((v,x) => {
+            if (cms) {
+            console.log(cms,x)
+            if (cms.find(e => e.name.startsWith(v.toLowerCase()))) {
+              cms = cms.find(e => e.name.startsWith(v.toLowerCase())).autocomplete
+              if (x == arg.split(" ").length-1 && cms) {
+                focusedAutocomplete = cms
+              }
+            }
+            }
+          })
+          window.autocomplete = []
+          let xAA = (focusedAutocomplete || [])
+          xAA.forEach((v) => {
+            if (v.name.startsWith(arg.split(" ")[arg.split(" ").length-1])) {
+              window.autocomplete.push({
+              decor: v.name+"...",
+              act:v.name.slice(arg.split(" ")[arg.split(" ").length-1].length)+" "
+            })
+            }
+          })
+        }
+      }
+    }
+
+    const runCmd = function() {
+      let dfc = window.commands.find(e => e.name == JSON.parse(window.setting).no_valid)
+      console.log(dfc,JSON.parse(window.setting).no_valid)
+      let x = searchBar.value.split(" ")
+      let cmd = x[0].toLowerCase()
+      x.splice(0,1)
+      let arg = x.join(" ")
+      let cmdX = commands.find(e => e.name == cmd)
+      if (cmdX) {
+        cmdX.action(arg)
+      } else if (dfc) {
+        dfc.action(searchBar.value)
+      }
+    }
+
+    let previous = "_____________"
+    const primaryMenuSystem = () => {
+      searchBar.type = "text"
+      searchBar.placeholder = "What would you like to do?"
+      searchBar.disabled = false
+      if (previous != searchBar.value) {
+        /*
+        getSorted(searchBar.value)
+        previous = searchBar.value
+        //console.log(searchBar.value)
+        resultsArea.innerHTML = ""
+        let nh = 0
+        let topMatchingX = []
+        Options.forEach((v,x) => {
+          if (v.pts) {
+            topMatchingX.push(v.pts)
+          }
+        })
+        let topMatching = Math.max(...topMatchingX)
+        let lowMatching = Math.min(...topMatchingX)
+        
+        let matchComp = {
+          [topMatching]:"BEST MATCH"
+        }
+        
+        if (topMatching==lowMatching) {
+          matchComp[topMatching] = " "
+        }
+        
+        if (topMatching-lowMatching == 2) {
+          matchComp[topMatching-1] = "OK MATCH"
+        } else if (topMatching-lowMatching >= 3) {
+          matchComp[topMatching-1] = "GOOD MATCH"
+          matchComp[topMatching-2] = "OK MATCH"
+        }
+        */    
+       previous = searchBar.value
+        let nh = 0
+        getAutocomplete()
+        resultsArea.innerHTML = ""
+        window.autocomplete.forEach((v,x) => {
+            nh += 30
+            let bm = ""
+          resultsArea.innerHTML += `<div class="result" onclick="searchBar.value += autocomplete[${x}].act" ha>
+            ${v.decor}
+        </div>`
+        })
+        resultsArea.style.height = `${nh}px`
+        //window.sizing(nh+80)
+        searchBar.onkeydown = function(e) {
+          if (e.key == "Enter")  {
+            runCmd()
+          }
+          if (e.key == "Tab")  {
+            searchBar.value += autocomplete[0].act
+          }
+        }
+      }
+    }
+    
+    let lastUpdatedCMSI = ""
+    let updatedCMSI = ""
+    
+    const createCustomMenu = function(sboptions,options) {
+      clearInterval(window.pmsID)
+      searchBar.value = ""
+      updatedCMSI = Math.random().toString().slice(2)
+      window.customMenuOptions = options
+      for (let [key,value] of Object.entries(sboptions)) {
+        searchBar[key] = value
+      }
+      window.pmsID = setInterval(customMenuSystem,100)
+      searchBar.focus()
+    }
+    
+    const returnToNormalMenu = function() {
+      clearInterval(window.pmsID)
+      searchBar.type = "text"
+      searchBar.placeholder = "What would you like to do?"
+      searchBar.disabled = false
+      searchBar.value = ""
+      searchBar.focus()
+      window.pmsID = setInterval(primaryMenuSystem,100)
+    }
+    
+    const customMenuSystem = function() {
+      if (lastUpdatedCMSI != updatedCMSI) {
+        let nh = 0
+        lastUpdatedCMSI = updatedCMSI
+      resultsArea.innerHTML = ""
+      window.customMenuOptions/*.slice(0,4)*/.forEach((v,x) => {
+          if (!v.hidden) {
+            nh += 30
+          resultsArea.innerHTML += `<div class="result" onclick="window.customMenuOptions[${x}].action()" ${({true:"ha"})[!v.text]}>
+          ${v.name}
+        </div>`
+          }
+        })
+      searchBar.onkeydown = function(e) {
+          if (e.key == "Enter")  {
+            window.customMenuOptions[0].action()
+          }
+        }
+      resultsArea.style.height = `${nh}px`
+      }
+    }
+    
+    window.pmsID = setInterval(primaryMenuSystem,100)
+
+    searchBar.onblur = function() {
+        console.log("Blur")
+        properFocus()
+    }
+
+    if (window.CustomTheme) {
+      document.getElementById("candleStyle").innerHTML = window.CustomTheme
+    }
+
+    loadPackages()
+
+    let cmdLAA = []
+
+    window.commands.forEach((v,x) => {
+      cmdLAA.push({name:v.name})
+    })
+
+    window.commands.find(e => e.name == "candlelight").autocomplete.find(e => e.name == "default_command").autocomplete = cmdLAA
+    searchBar.focus()
+    </script>
+</html>

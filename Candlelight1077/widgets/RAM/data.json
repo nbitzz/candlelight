@@ -1,0 +1,14 @@
+{
+    "config":{
+        "align": [
+            "center",
+            "left",
+            "right"
+        ],
+        "display": [
+            "used",
+            "percent",
+            "used percent%"
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "config":{
+        "site": [
+            "https://www.google.com",
+            "https://www.roblox.com",
+            "https://www.youtube.com",
+            "https://www.example.com"
+        ],
+        "ping_every": [
+            "120000",
+            "60000",
+            "30000",
+            "15000",
+            "5000"
+        ],
+        "align": [
+            "center",
+            "left",
+            "right"
+        ]
+    }
+}

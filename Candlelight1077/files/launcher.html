@@ -1,0 +1,43 @@
+<html>
+<head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Source+Sans+Pro:wght@200&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Open+Sans:wght@300&display=swap');
+    * {
+        font-family:"Fira Code",monospace;
+    }
+    button {
+        color:white;
+        background-color:#00000000;
+        border:none;
+        display:block;
+        width:100%;
+        height:16px;
+        font-size:14px;
+        transition-duration:0.1s;
+        text-align:left;
+        outline:none;
+    }
+    button[e]:hover {
+        color:#AAFFAA;
+        display:block;
+        width:100%;
+        height:18px;
+        font-size:16px;
+        transition-duration:0.1s;
+    }
+    body {
+        background-color:#222222;
+    }
+</style>
+</head>
+<body>
+<button style="height:5.5em;"><b style="font-size:30px;">candlelight launcher</b><br>Select an app to launch.</button>
+</body>
+<script>
+window.appsK.forEach((v,x) => {
+    document.body.innerHTML += `<button e onclick="openApp('${v}')">${v}</button>`
+})
+</script>
+</html>
