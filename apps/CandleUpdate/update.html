@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <style id="candleStyle">
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Source+Sans+Pro:wght@200&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Open+Sans:wght@300&display=swap');
+          * {
+            font-family:"Fira Code",monospace;
+          }
+          
+          tag {
+            font-size:10px;
+            position:relative;
+            top:-10px;
+            color:#66CCEE;
+            text-transform:uppercase;
+          }
+          
+          #connectionStatusTopbar {
+            left:0px;
+            top:0px;
+            position:fixed;
+            width:100%;
+            height:30px;
+            background-color:#DDDDDD;
+            z-index:100;
+          }
+          
+          #connectionStatusTopbar p {
+            top:50%;
+            left:10px;
+            transform:translate(0%,-125%);
+            position:absolute;
+          }
+          
+          #connectionStatusTopbar button {
+            top:50%;
+            left:calc( 100% - 10px );
+            transform:translate(-100%,-50%);
+            position:absolute;
+            border:2px solid #FFFFFF;
+            border-radius:8px;
+          }
+          
+          
+          
+          
+          
+          #ExampleFrame {
+              width:250px;
+              position:fixed;
+              left:0px;
+              top:0px;
+              height:100%;
+              background-color:#FFFFFF;
+          }
+
+          
+          
+          body {
+            background-color:#222222;
+          }
+          
+          .widg {
+            width:125px;
+            height:15px;
+            font-size:15px;
+            text-align:center;
+            position:fixed;
+            top:0px;
+            color:white;
+          }
+
+          #GuideFrame > * {
+              color:white;
+          }
+
+          #GuideFrame {
+              overflow-y:scroll;
+              left:10px;
+              top:0px;
+              width:calc( 100% - 10px );
+              height:100%;
+              position:fixed;
+          }
+
+          #GuideFrame button {
+            border:2px solid #444444;
+            border-radius:6px;
+            /*height:1em;*/
+            width:4em;
+            outline:none;
+          }
+
+          #GuideFrame input {
+              border-radius:6px;
+              border:2px solid #444444;
+              height:2em;
+              width:calc( 100% - 10px );
+              outline:none;
+              background-color:#222222;
+              padding-left:5px;
+          }
+          
+          /* Stuff from legacy */
+          
+          #err_scr {
+            background-color:#333333;
+            position:fixed;
+            width:400px;
+            height:250px;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+          z-index:10;
+          }
+          
+          .loginInput {
+            border:none;
+            outline:none;
+            border-radius:4px;
+            font-family:'Source Sans Pro',sans-serif;
+            font-size:16px;
+            transform:translate(-50%,0%);
+            left:50%;
+            position:relative;
+            text-align:center;
+            background-color:#444444;
+            color:#DDDDDD;
+            padding:2px;
+          }
+          
+        </style>
+        </head>
+
+<body>
+  <div id="GuideFrame">
+    <div id="nScrn">
+    <p><b>Candlelight Update</b></p>
+    <p>Candlelight Update is trying to find new versions of Candlelight...</p>
+    </div>
+  </div>
+  </div>
+</body>
+
+<script>
+
+const openAsErrorScreen = function(title,xm) {
+  document.getElementById("nScrn").getElementsByTagName("p")[0].getElementsByTagName("b")[0].innerHTML = title
+  document.getElementById("nScrn").getElementsByTagName("p")[1].innerHTML = xm.replace(/ /g,"<br>")
+  document.getElementById("nScrn").style.display = "block"
+}
+
+
+  
+</script>
+
+</html>

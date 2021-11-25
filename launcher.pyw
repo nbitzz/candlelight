@@ -26,7 +26,8 @@ window_info.SetAsChild(root.winfo_id(),[0, 0, 600, 400])
 apps = {
     "Candlelight":candleDir+"/candlelight.py",
     "ThemeBuilder":candleDir+"/apps/ThemeBuilder/ThemeBuilder.py",
-    "Candlelight Distos":candleDir+"/apps/CandleBuild/CandleBuild.py",
+    "Candlelight Distros":candleDir+"/apps/CandleBuild/CandleBuild.py",
+    "Candlelight Update":candleDir+"/apps/CandleUpdate/Update.py",
     #"Shortcuts":candleDir+"/apps/shortcuts/shortcuts.py",
 }
 

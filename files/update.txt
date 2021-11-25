@@ -1,0 +1,10 @@
+; You should not need to edit this file.
+;
+; This file holds the names of widgets that do not need to be transferred.
+; For example, when updating DiskC to Disk, we do not want to transfer DiskC, so we do this:
+; del DiskC
+; Of course, we still want to make sure that Candlelight boots, so let's replace the widget:
+; wrep DiskC Disk
+;
+; wrep - Widget replace, replace a widget with another
+; del - Do not transfer this widget to this update

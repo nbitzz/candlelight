@@ -6,8 +6,13 @@ pynput
 cefpython3
 psutil
 
-Candlelight 1.0.77
-Public Release
+Candlelight 1.1.0
+Beta 1
+
+Bugfixes
++ ThemeBuilder generates valid CSS files now
++ Fixed a typo
 
 Other
-+ i need to test more thouroughly
++ Added Candlelight Update. It only works in the terminal, so you need to use the launcher or PowerShell/Command Prompt. I have no idea either.
+TODO: Add Shortcuts

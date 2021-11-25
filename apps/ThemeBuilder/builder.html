@@ -196,7 +196,7 @@
           }
           `
 
-    const FINX = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+    let FINX = `@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Source+Sans+Pro:wght@200&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Open+Sans:wght@300&display=swap');
       * {
@@ -243,7 +243,7 @@
         width:500px;
         height:50px;
         outline:none;
-        background:#{SEARCHBARBACKGROUND};
+        background-color:#{SEARCHBARBACKGROUND};
         color:#{SEARCHBARTEXTCOLOR};
         font-size:20px;
         padding-left:15px;
@@ -268,26 +268,26 @@
       .result {
         width:calc( 100% - 10px);
         height:25px;
-        background-color:#{RESULTBACKGROUND};
+        background-color:#{RESULTSBACKGROUND};
         border:none;
         transition-duration:0.1s;
         position:relative;
         padding-left:10px;
         padding-top:5px;
-        color:#{RESULTTEXTCOLOR};
+        color:#{RESULTSTEXTCOLOR};
       }
       
       .result[ha]:hover {
-        background-color:#{RESULTBACKGROUNDHOVER};
+        background-color:#{RESULTSBACKGROUNDHOVER};
         transition-duration:0.1s;
-        color:#{RESULTTEXTCOLORHOVER};
+        color:#{RESULTSTEXTCOLORHOVER};
       }
       
       #results {
         width:100%;
         /*height:60px;*/
         border-radius:12px;
-        background-color:#{RESULTBACKGROUND};
+        background-color:#{RESULTSBACKGROUND};
         position:relative;
         top:10px;
         overflow:hidden;
@@ -340,9 +340,12 @@
 
     const PopulateDisplayData = function(dmx,ots) {
         let dd = ots || THEME_BASE_DISPLAY_DATA
+        console.log(ots,dd)
         for (let [key,value] of Object.entries(dmx)) {
+            console.log(key,value)
             dd = dd.replace(new RegExp(`{${key.toUpperCase()}}`,"g"),value)
         }
+        console.log(dd)
         return dd
     }
 
@@ -370,7 +373,7 @@
 
     const finishTheme = function() {
         let ns = PopulateDisplayData(window.opts,FINX)
-        window.finTheme(document.getElementById("THEMENAME").value || Date.now().toString(),FINX)
+        window.finTheme(document.getElementById("THEMENAME").value || Date.now().toString(),ns)
     }
 
     addOption("SEARCHBARBORDER","555555")
