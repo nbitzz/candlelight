@@ -147,7 +147,7 @@
 
 const openAsErrorScreen = function(title,xm) {
   document.getElementById("nScrn").getElementsByTagName("p")[0].getElementsByTagName("b")[0].innerHTML = title
-  document.getElementById("nScrn").getElementsByTagName("p")[1].innerHTML = xm.replace(/ /g,"<br>")
+  document.getElementById("nScrn").getElementsByTagName("p")[1].innerHTML = xm.replace(/\n/g,"<br>")
   document.getElementById("nScrn").style.display = "block"
 }
 
