@@ -9,11 +9,18 @@ assignees: nbitzz
 
 **Please describe your issue.**
 ...
+
 **Are you able to reproduce this bug easily?**
 ...
+
 **Was any error provided?**
 ...
+
 **What widgets/themes/packages do you have installed?**
 ...
 
-**Please supply your settings.json file.**
+**Please supply your `settings.json` file and your version.**
+...
+
+**Does this bug seem to only occur on your device? If so, please provide your device information.**
+...
