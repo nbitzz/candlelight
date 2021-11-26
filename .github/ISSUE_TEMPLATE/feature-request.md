@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Describe this issue template's purpose here.
+about: Want a new feature in Candlelight? Use this template.
 title: "[FEATURE]"
 labels: enhancement
 assignees: ''
