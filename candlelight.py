@@ -60,6 +60,9 @@ root.overrideredirect(1)
 root.geometry("520x50")
 root.attributes("-alpha",0)
 root.attributes("-topmost",True)
+candleIco = tk.PhotoImage(file=dirname(abspath(__file__))+"\\files\\candle.png")
+root.iconphoto(False,candleIco)
+root.config(bg="#222222")
 
 
 if platform.system() != "Windows":
@@ -101,7 +104,8 @@ def properFocus():
         queueA.append(lambda: browser.SetFocus(True))
         queueA.append(lambda: browser.ExecuteJavascript("searchBar.focus()"))
 
-
+def rgbtohex(r,g,b):
+    return f'#{r:02x}{g:02x}{b:02x}'
     
 
 window_info = cef.WindowInfo()
@@ -132,13 +136,21 @@ def properReload():
     bindings.SetProperty("USERNAME",getpass.getuser())
     bindings.SetProperty("widgets",json.dumps(widgetNames))
     bindings.SetProperty("themes",json.dumps(themeNames))
-    
+    bindings.SetProperty("candleVersionFile",Path(dirname(abspath(__file__))+"/files/candle").read_text())
     bindings.SetProperty("CustomTheme",Path(dirname(abspath(__file__))+"/themes/"+json.loads(sjs)["theme"]+".css").read_text())
     bindings.SetProperty("setting",sjs)
     bindings.SetProperty("packages",json.dumps(packages))
     browser.Reload()
     bindings.Rebind()
-    
+
+cndOpen = False    
+
+def tellUpdateFile():
+    if tk.messagebox.askyesno("New update","A new version seems to be available.\nWould you like to go to the GitHub Releases page?"):
+        webbrowser.open("https://github.com/nbitzz/candlelight/releases")
+        if cndOpen:
+            Candlelight()
+
 def saveSettings(x):
     Path(dirname(abspath(__file__))+"/settings.json").write_text(x)
 
@@ -160,6 +172,7 @@ bindings.SetFunction("exit",exfnc)
 bindings.SetFunction("reloadBrowser",properReload)
 bindings.SetFunction("saveSettings",saveSettings)
 bindings.SetFunction("open_in_notepad",open_in_notepad)
+bindings.SetFunction("tellNewerVersion",tellUpdateFile)
 
 cef.Initialize({},{"use-fake-ui-for-media-stream":True,"enable-media-stream":True,"disable-web-security":True})
 browser = cef.CreateBrowserSync(window_info,url="file://{}".format(dirname(abspath(__file__))+"/candle_int.html"))
@@ -168,7 +181,7 @@ properReload()
 
 queueA = []
 
-cndOpen = False
+
 
 oldMousePos = (0,0)
 

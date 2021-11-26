@@ -1,4 +1,3 @@
-# Don't expect nice code in these apps, they're mostly for me or for creative people anyway
 from cefpython3 import cefpython as cef
 import tkinter as tk
 import time

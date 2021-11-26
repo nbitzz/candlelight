@@ -29,6 +29,13 @@ window.commands.push({
                     }
                 }
             break
+            case "use":
+                if (st.pkg.findIndex(e => e == args[1]) < -1) {
+                    st.pkg.push(args[1])
+                    window.saveSettings(JSON.stringify(st))
+                    window.reloadBrowser()
+                }
+            break
             case "enabled":
                 let em = JSON.parse(window.setting).pkg
                 let enabledModulesT = []

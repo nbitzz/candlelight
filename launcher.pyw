@@ -1,5 +1,3 @@
-# This is a mess lol, oh well.
-# Yeah I recommend you just edit the CSS files but this should work
 from cefpython3 import cefpython as cef
 import tkinter as tk
 import time
@@ -7,7 +5,6 @@ from os.path import dirname,abspath
 from pathlib import Path
 import sys
 import subprocess
-#import psutil
 root = tk.Tk()
 root.geometry("600x400")
 root.title("Candlelight")
@@ -26,9 +23,10 @@ window_info.SetAsChild(root.winfo_id(),[0, 0, 600, 400])
 apps = {
     "Candlelight":candleDir+"/candlelight.py",
     "ThemeBuilder":candleDir+"/apps/ThemeBuilder/ThemeBuilder.py",
-    "Candlelight Distros":candleDir+"/apps/CandleBuild/CandleBuild.py",
+    "Shortcuts":candleDir+"/apps/shortcuts/shortcuts.py",
     "Candlelight Update":candleDir+"/apps/CandleUpdate/Update.py",
-    #"Shortcuts":candleDir+"/apps/shortcuts/shortcuts.py",
+    "Candlelight Distros":candleDir+"/apps/CandleBuild/CandleBuild.py",
+    "About Candlelight":candleDir+"/apps/candleab/candle.py",
 }
 
 def openApp(name):

@@ -6,13 +6,12 @@ pynput
 cefpython3
 psutil
 
-Candlelight 1.1.0
-Beta 1
+Candlelight 1.1.0b2
 
-Bugfixes
-+ ThemeBuilder generates valid CSS files now
-+ Fixed a typo
+Builtin Packages
++ Added the `use` keyword to `pkg`. It simply enables a package.
++ Added the `util` package.
++ Added the `hk` package.
 
 Other
-+ Added Candlelight Update. It only works in the terminal, so you need to use the launcher or PowerShell/Command Prompt. I have no idea either.
-TODO: Add Shortcuts
++ Added an update notifier.

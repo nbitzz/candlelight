@@ -172,190 +172,6 @@
 
     window.autocomplete = []
 
-    /*
-    const Options = [
-      {
-        name:"Change my password",
-        words: ["password","change","change","pw","pass","security"],
-        action: function() {
-          createCustomMenu(
-          {
-            placeholder:"New password...",
-            type:"password"
-          },
-            [
-              {
-                name:"Confirm",
-                action: function() {
-                  let psw = searchBar.value
-                  if (psw) {
-                    sendRaw({type:"passchange",newpass:psw})
-                  }
-                  returnToNormalMenu()
-                }
-              },
-              {
-                name:"Cancel",
-                action: function() {
-                  returnToNormalMenu()
-                }
-              }
-            ]
-          )
-        }
-      },
-      {
-        name:"Log out of all sessions",
-        words: ["log","out","sessions","sessions","session","security","session"],
-        action: function() {
-          
-        }
-      },
-      {
-        name:"Log out",
-        words: ["log","log","out","account"],
-        action: function() {
-          if (window.confirm("Are you sure you want to log out?")) {
-            localStorage.setItem("uchatLogin","")
-            window.location = "/uchat"
-          }
-          createCustomMenu(
-          {
-            value:"Are you sure you want to log out?",
-            disabled:true
-          },
-            [
-              {
-                name:"Yes",
-                action: function() {
-                  localStorage.setItem("uchatLogin","")
-                  window.location = "/uchat"
-                }
-              },
-              {
-                name:"Nevermind",
-                action: function() {
-                  returnToNormalMenu()
-                }
-              }
-            ]
-          )
-        }
-      },
-      {
-        name:"Contact a moderator",
-        words: ["report","user","bad","dangerous","content","ask","admin","mod","moderator"],
-        action: function() {
-          window.location=`/ucApps/mail#Exobyte`
-        }
-      },
-      {
-        name:"View my profile",
-        words: ["see","change","view","account","profile","bio","bio"],
-        action: function() {
-          window.location=`/ucApps/profile#${usernameLoggedIn}`
-        }
-      },
-      {
-        name:"Deactivate my account",
-        words: ["deactivate","account","delete","remove"],
-        action: () => {
-          createCustomMenu(
-          {
-            value:"Are you sure you want to deactivate?",
-            disabled:true
-          },
-            [
-              {
-                name:"Yes",
-                action: function() {
-                  createCustomMenu(
-          {
-            value:"Your account cannot be recovered.",
-            disabled:true
-          },
-            [
-              {
-                name:"Continue",
-                action: function() {
-                  createCustomMenu(
-          {
-            placeholder:"Retype your username to continue.",
-            disabled:false
-          },
-            [
-              {
-                name:"OK",
-                action: function() {
-                  if (searchBar.value == usernameLoggedIn) {
-                    localStorage.setItem("uchatLogin","")
-                    window.location = "/uchat"
-                  }
-                }
-              },
-              {
-                name:"Nevermind",
-                action: function() {
-                  returnToNormalMenu()
-                }
-              }
-            ]
-          )
-                }
-              },
-              {
-                name:"Nevermind",
-                action: function() {
-                  returnToNormalMenu()
-                }
-              }
-            ]
-          )
-                }
-              },
-              {
-                name:"Nevermind",
-                action: function() {
-                  returnToNormalMenu()
-                }
-              }
-            ]
-          )
-        }
-      },
-      {
-        name:"Profile visibility",
-        words: ["profile","account","show","hide"],
-        action: () => {
-          
-        }
-      }
-    ]
-
-  
-    const getSorted = function(Containing) {
-      let match = Containing.replace(/\,/g,"").replace(/\./g,"").replace(/\!/g,"").replace(/\?/g).toLowerCase().split(" ").filter(e => !e.endsWith("'s"))
-      console.log(match)
-      Options.sort((first,second) => {
-        let fPts = 0
-        let sPts = 0
-        first.words.forEach((v) => {
-          if (match.find(e => e == v)) {
-            fPts++
-          }
-        })
-        second.words.forEach((v) => {
-          if (match.find(e => e == v)) {
-            sPts++
-          }
-        })
-        first.hidden = ({0:true})[fPts] || false
-        second.hidden = ({0:true})[sPts] || false
-        first.pts = fPts
-        second.pts = sPts
-        return ({true:-1,false:1})[fPts>sPts]
-      })
-    }*/
 
     var avWidgets = []
 
@@ -762,6 +578,22 @@
     window.commands.forEach((v,x) => {
       cmdLAA.push({name:v.name})
     })
+
+    const candle_checkUpdateStatus = () => {
+      if (!JSON.parse(window.setting).pkg.find(e => e == "dev")) {
+      let or = new XMLHttpRequest()
+      or.open("GET","https://raw.githubusercontent.com/nbitzz/candlelight/main/files/candle")
+      or.send()
+      or.onload = function() {
+        if (or.responseText != window.candleVersionFile) {
+          tellNewerVersion()
+        }
+      }
+    }
+    }
+
+    candle_checkUpdateStatus()
+    setInterval(candle_checkUpdateStatus,1000*60*60*2) // 2 hours
 
     window.commands.find(e => e.name == "candlelight").autocomplete.find(e => e.name == "default_command").autocomplete = cmdLAA
     searchBar.focus()
