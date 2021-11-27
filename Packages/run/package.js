@@ -4,9 +4,3 @@ window.commands.push({
         open_in_notepad(eval(arg).toString())
     }
 })
-window.commands.push({
-    name:"open",
-    action: function(arg) {
-        exec(`os.popen('${arg.replace(/\'/g,"\\'")}')`)
-    }
-})

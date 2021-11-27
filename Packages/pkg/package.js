@@ -30,7 +30,7 @@ window.commands.push({
                 }
             break
             case "use":
-                if (st.pkg.findIndex(e => e == args[1]) < -1) {
+                if (st.pkg.findIndex(e => e == args[1]) == -1) {
                     st.pkg.push(args[1])
                     window.saveSettings(JSON.stringify(st))
                     window.reloadBrowser()
@@ -56,6 +56,10 @@ window.commands.push({
     autocomplete: [
         {
             name:"toggle",
+            autocomplete:JSON.parse(window.packages)
+        },
+        {
+            name:"use",
             autocomplete:JSON.parse(window.packages)
         },
         {

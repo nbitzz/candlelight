@@ -5,6 +5,7 @@ from os.path import dirname,abspath
 from pathlib import Path
 import sys
 import subprocess
+import webbrowser
 root = tk.Tk()
 root.geometry("600x400")
 root.title("Candlelight")
@@ -23,16 +24,19 @@ window_info.SetAsChild(root.winfo_id(),[0, 0, 600, 400])
 apps = {
     "Candlelight":candleDir+"/candlelight.py",
     "ThemeBuilder":candleDir+"/apps/ThemeBuilder/ThemeBuilder.py",
-    "Shortcuts":candleDir+"/apps/shortcuts/shortcuts.py",
     "Candlelight Update":candleDir+"/apps/CandleUpdate/Update.py",
     "Candlelight Distros":candleDir+"/apps/CandleBuild/CandleBuild.py",
-    "About Candlelight":candleDir+"/apps/candleab/candle.py",
+    "GitHub - Candlelight":"https://github.com/nbitzz/candlelight",
+    "GitHub - Addons":"https://github.com/nbitzz/candle-extra-packages",
 }
 
 def openApp(name):
     global aeae
-    subprocess.Popen("{} \"{}\"".format(sys.executable,apps[name]))
-    aeae=False
+    if (apps[name].startswith("https://")):
+        webbrowser.open(apps[name])
+    else:
+        subprocess.Popen("{} \"{}\"".format(sys.executable,apps[name]))
+        aeae=False
 
     
 bindings = cef.JavascriptBindings()

@@ -140,6 +140,7 @@ def properReload():
     bindings.SetProperty("CustomTheme",Path(dirname(abspath(__file__))+"/themes/"+json.loads(sjs)["theme"]+".css").read_text())
     bindings.SetProperty("setting",sjs)
     bindings.SetProperty("packages",json.dumps(packages))
+    bindings.SetProperty("DIR",dirname(abspath(__file__)))
     browser.Reload()
     bindings.Rebind()
 

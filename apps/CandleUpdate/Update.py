@@ -42,7 +42,7 @@ def updateCandleWith(nb):
             tx = (nb/"files"/"candle").read_text()
             try:
                 if (int(tx.split(",")[1]) > int(Path(candleDir+"/files/candle").read_text().split(",")[1])):
-                    screen('Updating...',"This may take a few seconds. Please stand by.")
+                    screen('Updating to {}'.format(tx.split(",")[0]),"This may take a few seconds. Please stand by.")
                     cef.MessageLoopWork()
                     root.update()
                     # This is going to be a mess but whatever
@@ -77,7 +77,7 @@ def updateCandleWith(nb):
                         else:
                             nSF["widgets"][x] = oSF["widgets"][x]
                     (nb/"settings.json").write_text(json.dumps(nSF))
-                    screen("Update successful","You can now use the new version of Candlelight.")
+                    screen("Update to {} successful".format(tx.split(",")[0]),"You can now use the new version of Candlelight.")
 
 
                 else:

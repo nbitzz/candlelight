@@ -1,0 +1,15 @@
+{
+    "config":{
+        "repo":"nbitzz/candlelight",
+        "refresh_every":[
+            "600000",
+            "300000",
+            "180000"
+        ],
+        "align": [
+            "center",
+            "left",
+            "right"
+        ]
+    }
+}

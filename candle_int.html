@@ -193,7 +193,11 @@
       let stX = {}
       console.log(wData)
       for (let [key,value] of Object.entries(wData.data.config)) {
-        stX[key] = st.widgets[x.toString()].settings[key] || value[0] || value
+        let xvl = value[0]
+        if (typeof(value) == typeof("")) {
+          xvl = value
+        }
+        stX[key] = st.widgets[x.toString()].settings[key] || xvl
       }
       return stX
     }

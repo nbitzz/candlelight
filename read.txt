@@ -6,12 +6,19 @@ pynput
 cefpython3
 psutil
 
-Candlelight 1.1.0b2
+Candlelight 1.1.0b3
 
-Builtin Packages
-+ Added the `use` keyword to `pkg`. It simply enables a package.
-+ Added the `util` package.
-+ Added the `hk` package.
+#### Builtin Packages
+- Removed `hk`. It's been moved to its own repo. Access the repo in the launcher under `GitHub - Addons`.
 
-Other
-+ Added an update notifier.
+#### Bugfixes
+- (#1) Fix weird linebreaks in CandleBuild and CandleUpdate
+- Fixed default values being clipped off to the first letter when using a text value in widgets
+
+#### Widgets
+- Added GitHubIssues widget. Track issues in a repo.
+- Added GitHubVersionTracker widget. Shows the tag name of the latest release in a repo.
+
+#### Other
+- Removed Shortcuts and About Candlelight from the launcher and  added GitHub - Candlelight and GitHub - Addons.
+- This is the last beta build before 1.1 releases!
