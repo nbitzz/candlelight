@@ -21,5 +21,6 @@
     "theme":"default",
     "pkg":["pkg"],
     "ui_put":"center",
-    "no_valid":"search"
+    "no_valid":"search",
+    "canfocus":false
 }

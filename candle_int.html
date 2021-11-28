@@ -256,6 +256,7 @@
     loadWidget(4)
     
     
+    
 
     window.commands = [
       {
@@ -323,6 +324,11 @@
               break
             }
             break
+            case "enable_other_focus":
+              st["canfocus"] = ({"on":true,"off":false})[args[1]] || st["canfocus"]
+              saveSettings(JSON.stringify(st))
+              reloadBrowser()
+            break
             case "put_ui":
               st["ui_put"] = args[1]
               saveSettings(JSON.stringify(st))
@@ -384,6 +390,13 @@
                     name:"default_command",
                     autocomplete:[
                       
+                    ]
+                  },
+                  {
+                    name:"enable_other_focus",
+                    autocomplete:[
+                      "on",
+                      "off"
                     ]
                   },
                   {
@@ -566,10 +579,14 @@
     
     window.pmsID = setInterval(primaryMenuSystem,100)
 
-    searchBar.onblur = function() {
+
+    if (!st["canfocus"]) {
+      searchBar.onblur = function() {
         console.log("Blur")
         properFocus()
     }
+    }
+    
 
     if (window.CustomTheme) {
       document.getElementById("candleStyle").innerHTML = window.CustomTheme
