@@ -325,7 +325,10 @@
             }
             break
             case "enable_other_focus":
-              st["canfocus"] = ({"on":true,"off":false})[args[1]] || st["canfocus"]
+              st["canfocus"] = ({"on":true,"off":false})[args[1]]
+              if (st["canfocus"] != false || !st["canfocus"]) {
+                st["canfocus"] = false
+              }
               saveSettings(JSON.stringify(st))
               reloadBrowser()
             break
@@ -395,8 +398,8 @@
                   {
                     name:"enable_other_focus",
                     autocomplete:[
-                      "on",
-                      "off"
+                      {name:"on"},
+                      {name:"off"}
                     ]
                   },
                   {
