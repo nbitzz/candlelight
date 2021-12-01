@@ -580,11 +580,11 @@
     window.pmsID = setInterval(primaryMenuSystem,100)
 
 
-    if (!st["canfocus"]) {
+    if (!JSON.parse(window.setting)["canfocus"]) {
       searchBar.onblur = function() {
         console.log("Blur")
         properFocus()
-    }
+      }
     }
     
 
